@@ -1,4 +1,4 @@
-# Dual MPU6050 Motion Sync
+# Motion Sync
 
 ## Usage
 
@@ -11,6 +11,23 @@
 4. Open Blender and change the `MCU_COM_PORT` value to what Arduino is currently using (can be checked in Device Manager, or just Arduino IDE).
 
 5. Run the script. Blender could halt for a while due to Arduino initializing the MPU6050s.
+
+## Packet Format
+
+Data is streamed from the sensor to the host computer in JSON format.
+
+### Joint Data Message
+
+```json
+[{"type": "joint", "name": "joint_name", "pos": [0, 0, 0], "rot": [0, 0, 0, 0]}]
+```
+
+### System Log Message
+
+```json
+[{"type": "log", "name": "INFO", "value": "log message"}]
+```
+
 
 ## Video
 
