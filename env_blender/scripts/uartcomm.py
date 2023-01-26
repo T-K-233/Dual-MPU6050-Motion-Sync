@@ -90,12 +90,12 @@ class UARTTable:
                     continue
 
             data = buf.decode()
+            # self.logger.debug(data)
             try:
                 data = json.loads(data)
             except json.decoder.JSONDecodeError:
                 self.logger.warning("packet format error.")
                 continue
-            self.logger.debug(data)
             key = data.get("key")
             if not key:
                 self.logger.warning("packet format error.")

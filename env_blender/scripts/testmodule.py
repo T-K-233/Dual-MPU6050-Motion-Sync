@@ -91,7 +91,7 @@ class ModalTimerOperator(bpy.types.Operator):
             q0 = np.array(q0)
             q1 = np.array(q1)
             
-            logger.debug(q0, q1)
+            logger.debug(str(q0) + str(q1))
             
             # get inverse transformation of q0, the parent bone
             q0_inv = q0 * np.array([1, -1, -1, -1])
@@ -101,7 +101,6 @@ class ModalTimerOperator(bpy.types.Operator):
             
             # apply transformation
             setBoneRotation(bone_upper_arm_R, q0)
-            
             setBoneRotation(bone_lower_arm_R, q1_rel)
 
             # if refresh rate is too low, uncomment this line to force Blender to render viewport
@@ -117,6 +116,10 @@ class ModalTimerOperator(bpy.types.Operator):
         
     def cancel(self, context):
         uart_table.stop()
+        
+        # reset joint position
+        setBoneRotation(bone_upper_arm_R, [1, 0, 0, 0])
+        setBoneRotation(bone_lower_arm_R, [1, 0, 0, 0])
         context.window_manager.event_timer_remove(self._timer)
         logger.info("BlenderTimer Stopped.")
         return {"CANCELLED"}
@@ -136,3 +139,4 @@ if __name__ == "__main__":
         logger.info("All started.")
     except KeyboardInterrupt:
         uart_table.stop()
+        logger.info("Received KeyboardInterrupt, stopped.")
