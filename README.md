@@ -1,33 +1,42 @@
 # Motion Sync
 
+## Prerequisite
+
+Requires [I2CDev Library](https://github.com/jrowberg/i2cdevlib) for reading MPU6050 on Arduino.
+
+
 ## Usage
 
-1. Put stuff in `library` to Arduino library folder.
+1. Connect hardware. The wiring diagram is documented inside Arduino script. Should be straghtforward, just an Arduino controller + two MPU6050s connected with I2C wires. The wires cannot be too long (I'm using a total length of ~600mm).
 
-2. Connect hardware. Should be straghtforward, just an Arduino controller + two MPU6050s connected with I2C wires. The wires cannot be too long (I'm using a total length of ~600mm).
+2. Upload Arduino code to MCU.
 
-3. Upload Arduino code to MCU.
+3. Open Blender and change the `MCU_COM_PORT` value to what Arduino is currently using (can be checked in Device Manager, or just Arduino IDE).
 
-4. Open Blender and change the `MCU_COM_PORT` value to what Arduino is currently using (can be checked in Device Manager, or just Arduino IDE).
+4. Run the script. The MPU6050 needs ~8 seconds to initialize before start transmitting data, so initially the armature won't move, and the script will prompt something like `2023-01-25 18:01:28 WARNING [BPY]: Invalid joint data `
 
-5. Run the script. Blender could halt for a while due to Arduino initializing the MPU6050s.
+5. Press ESC at the main Blender window to stop the script.
 
 ## Packet Format
 
-Data is streamed from the sensor to the host computer in JSON format.
+Data is streamed from the sensor to the host computer in JSON key-value pair encoding format.
 
 ### Joint Data Message
 
 ```json
-[{"type": "joint", "name": "joint_name", "pos": [0, 0, 0], "rot": [0, 0, 0, 0]}]
+{"key": "/joint/joint_name", "value": [0, 0, 0, 0]}\n
 ```
+
+where `pos` is in format `[x, y, z]`, and `rot` is in format `[w, x, y, z]`.
+
 
 ### System Log Message
 
 ```json
-[{"type": "log", "name": "INFO", "value": "log message"}]
+{"key": "/log", "value": "INFO: log message"}\n
 ```
 
+#### Note: all the newline character in the data should be escaped with NLSM encoding.
 
 ## Video
 
