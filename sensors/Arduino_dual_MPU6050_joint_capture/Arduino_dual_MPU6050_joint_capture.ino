@@ -1,7 +1,7 @@
 #include "Wire.h"
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps612.h"
-
+ 
 /**
  * # Wiring
  * | MPU6050 | Arduino   |
